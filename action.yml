@@ -21,6 +21,14 @@ inputs:
   packageExtraArgs:
     description: Helm package command extra arguments.
     required: false
+  HelmS3Version:
+    description: Version of helm-s3 plugin
+    default: 'v0.13.0'
+    required: false
+  HelmPackVersion:
+    description: Version of helm-pack plugin
+    default: 'v0.2.2'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -29,3 +37,5 @@ runs:
     - ${{ inputs.chart }}
     - ${{ inputs.repo }}
     - ${{ inputs.forceRelease }}
+    - ${{ inputs.HelmS3Version }}
+    - ${{ inputs.HelmPackVersion }}

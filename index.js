@@ -31,7 +31,7 @@ function package() {
     RELEASE_DIR,
     ...core.getInput('packageExtraArgs').split(/\s+/),
   ];
-  
+
   const version = core.getInput('version');
   if (version) {
     args.push('--version', version);
@@ -49,7 +49,7 @@ function push() {
     releaseFile,
     REPO_ALIAS,
   ];
-  
+
   const forceRelease = core.getInput('forceRelease', { required: true }) === 'true';
   if (forceRelease) {
     args.push('--force');
@@ -63,11 +63,11 @@ function push() {
 // Returns argument required to install helm-s3 and helm-pack plugins.
 function installPlugins() {
   const plugins = [
-    'https://github.com/hypnoglow/helm-s3.git',
-    'https://github.com/thynquest/helm-pack.git',
+    { name: 'https://github.com/hypnoglow/helm-s3.git', version: core.getInput('HelmS3Version') },
+    { name: 'https://github.com/thynquest/helm-pack.git', version: core.getInput('HelmPackVersion') },
   ];
 
-  return Promise.all(plugins.map(plugin => exec.exec(HELM, ['plugin', 'install', plugin])));
+  return Promise.all(plugins.map(plugin => exec.exec(HELM, ['plugin', 'install', plugin.name, '--version', plugin.version])));
 }
 
 async function main() {
